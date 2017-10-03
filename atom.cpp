@@ -9,6 +9,6 @@ bool Atom::match(Atom a){
     return false;
 }
 bool Atom::match(Variable &v){
-    // return v.match(*this);
-    return false;
+    return v.match(*this);
+    // return false;
 }
