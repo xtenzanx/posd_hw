@@ -3,7 +3,19 @@
 #include "variable.h"
 
 bool Variable::match(Number n){
-    return true;
+    bool ret = _assignable;
+    
+    if(_value == n.symbol()){
+        ret = true;
+    }
+    else{
+        if(_assignable){
+            _value = n.symbol();
+            _assignable = false;
+        }
+    }
+
+    return ret;
 }
 bool Variable::match(Atom a){
     bool ret = _assignable;
@@ -19,9 +31,6 @@ bool Variable::match(Atom a){
     }
 
     return ret;
-
-
-
 
     // bool ret = _assignable;
     // if(_assignable){
