@@ -8,7 +8,7 @@ bool Atom::match(Number n){
 bool Atom::match(Atom a){
     return false;
 }
-bool Atom::match(Variable &v){
-    return v.match(*this);
-    // return true;
-}
+// bool Atom::match(Variable &v){
+//     // return v.match(*this);
+//     return true;
+// }
