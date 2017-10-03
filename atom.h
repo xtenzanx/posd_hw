@@ -15,7 +15,7 @@ public:
 
   bool match(Number n);
   bool match(Atom a);
-  bool match(Variable &v);
+  bool match(Variable v);
 };
 
 #endif
