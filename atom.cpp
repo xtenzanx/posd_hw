@@ -12,3 +12,7 @@ bool Atom::match(Atom a){
 //     // return v.match(*this);
 //     return true;
 // }
+
+bool Atom::match(Variable &v){
+    return true;
+}
