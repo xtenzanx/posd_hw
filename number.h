@@ -9,7 +9,7 @@ class Variable;
 
 class Number {
 public:
-    Number(string i):_symbol(i),_value(i){}
+    // Number(string i):_symbol(i),_value(i){}
 
     Number(int i){
         _symbol = std::to_string(i);

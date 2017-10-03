@@ -16,17 +16,8 @@ public:
   string value(){ return _value; }
 
   bool match(Number n);
-  // bool match(Atom a){
-  //   bool ret = _assignable;
-  //   if(_assignable){
-  //     _value = a._symbol ;
-  //     _assignable = false;
-  //   }
-  //   return ret;
-  // }
-  // bool match(Variable v){
-  //     return false;
-  // }
+  bool match(Atom a);
+  bool match(Variable v);
 
 private:
   string _value;
