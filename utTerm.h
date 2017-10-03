@@ -7,39 +7,39 @@
 
 //test Number.value()
 TEST (Number,ctor) {
-    Number n("598");
+    Number n(598);
     ASSERT_EQ("598", n.value());
 }
 //test Number.symbol()
 TEST (Number, symbol) {
-    Number n("598");
+    Number n(598);
     ASSERT_EQ("598", n.symbol());
 }
 //?- 25=25.
 //true.
 TEST (Number, matchSuccess) {
-    Number n1("25");
-    Number n2("25");
+    Number n1(25);
+    Number n2(25);
     ASSERT_TRUE(n1.match(n2));
 }
 //?- 25=0.
 //false.
 TEST (Number, matchFailureDiffValue) {
-    Number n1("25");
-    Number n2("0");
+    Number n1(25);
+    Number n2(0);
     ASSERT_FALSE(n1.match(n2));
 }
 //?- 25=tom.
 //false.
 TEST (Number, matchFailureDiffConstant) {
-    Number n("25");
+    Number n(25);
     Atom a("tom");
     ASSERT_FALSE(n.match(a));
 }
 //?- 25=X.
 //true.
 TEST (Number, matchSuccessToVar) {
-    Number n("25");
+    Number n(25);
     Variable x("X");
     ASSERT_TRUE(n.match(x));
 }
@@ -48,7 +48,7 @@ TEST (Number, matchSuccessToVar) {
 //false.
 TEST (Atom, matchFailureDiffConstant) {
     Atom a("tom");
-    Number n("25");
+    Number n(25);
     ASSERT_FALSE(a.match(n));
 }
 

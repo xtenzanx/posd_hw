@@ -10,6 +10,11 @@ class Variable;
 class Number {
 public:
     Number(string i):_symbol(i),_value(i){}
+
+    Number(int i){
+        _symbol = std::to_string(i);
+        _value = std::to_string(i);
+    }
     
     string value(){ return _value; }
 	string symbol(){ return _symbol; }
