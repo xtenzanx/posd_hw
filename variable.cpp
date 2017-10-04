@@ -31,11 +31,4 @@ bool Variable::match(Atom a){
     }
 
     return ret;
-
-    // bool ret = _assignable;
-    // if(_assignable){
-    //     _value = a._symbol ;
-    //     _assignable = false;
-    // }
-    // return ret;
 }
