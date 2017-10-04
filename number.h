@@ -8,23 +8,15 @@ class Atom;
 class Variable;
 
 class Number {
-public:
-    // Number(string i):_symbol(i),_value(i){}
-
-    Number(int i){
-        _symbol = std::to_string(i);
-        _value = std::to_string(i);
-    }
-    
-    string value(){ return _value; }
-	string symbol(){ return _symbol; }
-    bool match(Number n);
-    bool match(Atom a);
-    bool match(Variable &v);
-
-private:
-    string _symbol;
-    string _value;
+	public :
+		Number ( int n ); 
+		int value ();
+		int symbol ();
+		bool match ( Number number );
+		bool match ( Atom atom );
+		bool match ( Variable &variable );
+	private :
+		const int _symbol;
 };
-
 #endif
+

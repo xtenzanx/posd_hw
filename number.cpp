@@ -2,16 +2,21 @@
 #include "atom.h"
 #include "variable.h"
 
-bool Number::match(Number n){
-    return (value() == n.value()) ? (true) : (false);
-}
-bool Number::match(Atom a){
-    return false;
-}
-bool Number::match(Variable &v){
-    return v.match(*this);
-    // return true;
+Number :: Number ( int n ) : _symbol ( n ) {}
+
+int Number :: value () { return _symbol; }
+
+int Number :: symbol () { return _symbol; }
+
+bool Number :: match ( Number number ){
+	return _symbol == number.symbol();
 }
 
+bool Number :: match ( Atom atom ){
+	return false;
+}
 
+bool Number :: match ( Variable &variable ){
+	return variable.match ( *this );
+} 
 
