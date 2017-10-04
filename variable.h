@@ -8,19 +8,20 @@ class Atom;
 class Number;
 
 class Variable{
-	public:
-  		Variable ( string v );
-		//string const _symbol;
-		bool assignable ();
-		string value ();
-		void setAssignable ( bool d );
-		void setValue ( string c );
-		bool match ( Atom atom );
-		bool match ( Number number );	
-	private:
-		string const _symbol;
-		string _value; 
-		bool _assignable = true; 
+public:
+  Variable(string s):_symbol(s){}
+  
+  string const _symbol;
+
+  string value(){ return _value; }
+
+  bool match(Number n);
+  bool match(Atom a);
+  // bool match(Variable v);
+
+private:
+  string _value;
+  bool _assignable = true;
 };
 
 #endif

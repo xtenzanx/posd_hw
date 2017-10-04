@@ -1,36 +1,41 @@
-#include <string>
-#include "variable.h"
 #include "number.h"
 #include "atom.h"
+#include "variable.h"
 
-using std :: string;
+bool Variable::match(Number n){
+    bool ret = _assignable;
+    
+    if(_value == n.symbol()){
+        ret = true;
+    }
+    else{
+        if(_assignable){
+            _value = n.symbol();
+            _assignable = false;
+        }
+    }
 
-Variable :: Variable ( string v ) : _symbol ( v ) {}
-
-bool Variable :: assignable () { return _assignable; }
-
-string Variable :: value () { return _value; } 
-
-void Variable :: setAssignable ( bool d ) { _assignable = d; }
-
-void Variable :: setValue ( string c ) { _value = c; }
-
-bool Variable :: match ( Atom atom ){
-	if ( _assignable || _value == atom.symbol() ){
-		_value = atom.symbol();
-		_assignable = false;	
-		return true;
-	}
-	return false;
+    return ret;
 }
+bool Variable::match(Atom a){
+    bool ret = _assignable;
 
-bool Variable :: match ( Number number ){
-	string temp = std :: to_string ( number.symbol() );
-	if ( _assignable || _value == temp ){
-		_value = temp;
-		_assignable = false;
-		return true;
-	}
-	return false;
+    if(_value == a._symbol){
+        ret = true;
+    }
+    else{
+        if(_assignable){
+            _value = a._symbol;
+            _assignable = false;
+        }
+    }
+
+    return ret;
+
+    // bool ret = _assignable;
+    // if(_assignable){
+    //     _value = a._symbol ;
+    //     _assignable = false;
+    // }
+    // return ret;
 }
-
