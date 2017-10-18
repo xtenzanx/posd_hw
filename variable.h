@@ -5,6 +5,7 @@
 #include <vector>
 using std::string;
 
+class Term;
 class Atom;
 class Number;
 class Struct;
