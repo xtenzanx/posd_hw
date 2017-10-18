@@ -1,6 +1,7 @@
 #ifndef UTVARIABLE_H
 #define UTVARIABLE_H
 
+#include <vector>
 #include "term.h"
 #include "atom.h"
 #include "number.h"
