@@ -43,7 +43,8 @@ public:
   bool match(Term &term){
     Struct * ps = dynamic_cast<Struct *>(&term);
     if (ps){
-      if (!_name.match(ps->_name))
+      // if (!_name.match(ps->_name))
+      if (_name.symbol() != ps->_name.symbol())
         return false;
       if(_args.size()!= ps->_args.size())
         return false;
