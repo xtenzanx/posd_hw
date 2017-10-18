@@ -77,9 +77,6 @@ bool Variable::match(Variable &v){
 
     //判斷是否為同個變數
     if(_symbol != v.symbol()){
-        //兩變數綁定(待擴充)
-        // matchVector.push_back(&v);
-        // v.matchVector.push_back(this);
 
         //己群加入他群成員
         std::vector<Variable*> otherVector = {};
@@ -115,10 +112,6 @@ bool Variable::match(Variable &v){
         }
         
 
-
-
-
-        
         
         if(!_assignable){
             //自己有值分給他人
