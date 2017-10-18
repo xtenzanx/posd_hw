@@ -10,9 +10,11 @@ class Term{
 public:
   virtual string symbol() const= 0;
 
-  virtual string value() const{
-    return symbol();
-  };
+  virtual string value() = 0;
+  // virtual string value() const{
+  //   return symbol();
+  // };
+
 
   virtual bool match(Term & term) {
     return symbol() == term.symbol();

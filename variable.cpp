@@ -2,9 +2,20 @@
 #include "variable.h"
 #include "atom.h"
 #include "number.h"
+#include "struct.h"
 
 string Variable::symbol() const{
     return _symbol;
+}
+
+string Variable::value(){
+    if(matchStruct!=0){
+        return matchStruct->value();
+    }
+    else{
+        return _value;
+    }
+    
 }
 
 
@@ -26,6 +37,12 @@ bool Variable::match(Atom a){
     else{
         if(_assignable){
             _value = a._symbol;
+
+            //更新群體value
+            for(int i = 0; i < matchVector.size(); i++){
+                matchVector[i]->setValue(_value);
+            }
+
             _assignable = false;
         }
     }
@@ -44,7 +61,7 @@ bool Variable::match(Number n){
         if(_assignable){
             _value = n.symbol();
 
-            //new
+            //更新群體value
             for(int i = 0; i < matchVector.size(); i++){
                 matchVector[i]->setValue(_value);
             }
@@ -122,4 +139,32 @@ bool Variable::match(Variable &v){
     }
 
     return true;
+}
+
+
+
+
+bool Variable::match(Struct &s){
+    bool ret = _assignable;
+
+
+    matchStruct = &s;
+    
+    // if(_value == n.symbol()){
+    //     ret = true;
+    // }
+    // else{
+    //     if(_assignable){
+    //         _value = n.symbol();
+            
+    //         //更新群體value
+    //         for(int i = 0; i < matchVector.size(); i++){
+    //             matchVector[i]->setValue(_value);
+    //         }
+
+    //         _assignable = false;
+    //     }
+    // }
+
+    return ret;
 }

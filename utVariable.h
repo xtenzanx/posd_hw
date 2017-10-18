@@ -116,7 +116,13 @@ TEST (Variable, num1_to_varZ_to_varX_and_varY_to_varX) {
 // Then #symbol() of Y should return "Y"
 // And #value() of Y should return "s(X)"
 TEST (Variable, Struct1) {
-
+  Variable X("X");
+  Variable Y("Y");
+  std::vector<Term *> v = {&X};
+  Struct s(Atom("s"), v);
+  Y.match(s);
+  EXPECT_EQ("Y",Y.symbol());
+  EXPECT_EQ("s(X)",Y.value());
 }
 
 // Give there is a Struct s contains Variable X
@@ -126,7 +132,15 @@ TEST (Variable, Struct1) {
 // Then #symbol() of Y should return "Y"
 // And #value() of Y should return "s(teddy)"
 TEST (Variable, Struct2) {
-  
+  Variable X("X");
+  Variable Y("Y");
+  std::vector<Term *> v = {&X};
+  Struct s(Atom("s"), v);
+  Y.match(s);
+  Atom teddy("teddy");
+  X.match(teddy);
+  EXPECT_EQ("Y",Y.symbol());
+  EXPECT_EQ("s(teddy)",Y.value());
 }
 
 #endif

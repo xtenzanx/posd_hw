@@ -4,3 +4,7 @@
 string Atom::symbol() const{
     return _symbol;
 }
+
+string Atom::value(){
+    return _symbol;
+};

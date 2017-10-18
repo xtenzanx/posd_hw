@@ -20,8 +20,8 @@ public:
         
     }
     
-    string value(){ return _value; }
     string symbol() const;
+    string value();
 
 
 private:

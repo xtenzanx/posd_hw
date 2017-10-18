@@ -9,6 +9,7 @@ class Atom : public Term{
 public:
   Atom (string s):_symbol(s) {}
   string symbol() const;
+  string value();
 
   string _symbol;
 };

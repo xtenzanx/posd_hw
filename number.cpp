@@ -4,3 +4,7 @@
 string Number::symbol() const{
     return _symbol;
 }
+
+string Number::value(){
+    return _value;
+}
