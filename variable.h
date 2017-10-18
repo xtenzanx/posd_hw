@@ -3,6 +3,7 @@
 
 #include <string>
 #include <vector>
+#include "term.h"
 using std::string;
 
 class Term;
