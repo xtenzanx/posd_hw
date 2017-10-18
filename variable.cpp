@@ -120,6 +120,7 @@ bool Variable::match(Variable &v){
             }
         }
         else{
+            _value = v.symbol();
             for(int i = 0; i < matchVector.size(); i++){
                 //別人有值自己加入
                 if(!matchVector[i]->getAssignable()){
