@@ -21,6 +21,9 @@ public:
   bool match(Number n);
   bool match(Variable &v);
   bool match(Struct &s);
+  bool match(Term & term) {
+    return symbol() == term.symbol();
+  }
 
   void setValue(string value);
   bool getAssignable();
