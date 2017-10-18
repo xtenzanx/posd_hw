@@ -29,14 +29,14 @@
 
 all: hw3
 
-hw3: main.o term.o atom.o number.o variable.o
+hw3: main.o term.o atom.o number.o variable.o struct.o
 ifeq (${OS}, Windows_NT)
-	g++ -o hw3 main.o term.o atom.o number.o variable.o -lgtest
+	g++ -o hw3 main.o term.o atom.o number.o variable.o struct.o -lgtest
 else
-	g++ -o hw3 main.o term.o atom.o number.o variable.o -lgtest -lpthread
+	g++ -o hw3 main.o term.o atom.o number.o variable.o struct.o -lgtest -lpthread
 endif
 	
-main.o: main.cpp utVariable.h
+main.o: main.cpp utVariable.h utStruct.h
 	g++ -std=gnu++0x -c main.cpp
 term.o: term.h term.cpp
 	g++ -std=gnu++0x -c term.cpp
@@ -46,8 +46,8 @@ variable.o: variable.h variable.cpp
 	g++ -std=gnu++0x -c variable.cpp
 atom.o: atom.h atom.cpp
 	g++ -std=gnu++0x -c atom.cpp
-# struct.o: struct.h struct.cpp
-# 	g++ -std=gnu++0x -c struct.cpp
+struct.o: struct.h struct.cpp
+	g++ -std=gnu++0x -c struct.cpp
 
 clean:	
 ifeq (${OS}, Windows_NT)
