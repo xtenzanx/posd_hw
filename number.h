@@ -5,6 +5,8 @@
 #include <sstream>
 using std::string;
 
+class Atom;
+class Variable;
 
 class Number : public Term{
 public:
@@ -22,6 +24,10 @@ public:
     
     string symbol() const;
     string value();
+
+    bool match(Number n);
+    bool match(Atom a);
+    bool match(Variable &v);
 
 
 private:
