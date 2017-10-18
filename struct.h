@@ -1,6 +1,7 @@
 #ifndef STRUCT_H
 #define STRUCT_H
 
+#include "term.h"
 #include "atom.h"
 #include <vector>
 #include <string>
