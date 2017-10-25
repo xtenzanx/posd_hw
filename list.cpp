@@ -52,6 +52,9 @@ bool List::match(Number &n){
 bool List::match(Struct &s){
     return false;
 }
+bool List::match(Variable &v){
+    return v.match(*this);
+}
 
 bool List::match(List &l){
 

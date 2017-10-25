@@ -9,6 +9,7 @@ using std::vector;
 class Term;
 class Atom;
 class Number;
+class Variable;
 class Struct;
 
 class List : public Term {
@@ -18,7 +19,7 @@ public:
   // bool match(Term & term);
   bool match(Atom &a);
   bool match(Number &n);
-  // bool match(Variable &v);
+  bool match(Variable &v);
   bool match(Struct &s);
   bool match(List &l);
   vector<Term *> getElements();
