@@ -46,6 +46,12 @@ string List::value(){
 bool List::match(Atom &a){
     return false;
 }
+bool List::match(Number &n){
+    return false;
+}
+bool List::match(Struct &s){
+    return false;
+}
 
 bool List::match(List &l){
 

@@ -17,9 +17,9 @@ public:
   string value();
   // bool match(Term & term);
   bool match(Atom &a);
-  // bool match(Number &n);
+  bool match(Number &n);
   // bool match(Variable &v);
-  // bool match(Struct &s);
+  bool match(Struct &s);
   bool match(List &l);
   vector<Term *> getElements();
 
