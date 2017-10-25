@@ -69,19 +69,19 @@ bool List::match(List &l){
     //     return false;
     // }
 
-    return _elements[1]->match( *(l._elements[1]) );
+    // return _elements[1]->match( *(l._elements[1]) );
     
 
-    // for(int i = 0; i < _elements.size() ; i++){
-    //     if(_elements[i]->match( *(l._elements[i]) )){
-    //         continue;
-    //     }
-    //     else{
-    //         return false;
-    //         // return true;
-    //     }
-    // }
-    // return true;
+    for(int i = 0; i < _elements.size() ; i++){
+        if(_elements[i]->match( *(l._elements[i]) )){
+            continue;
+        }
+        else{
+            return false;
+            // return true;
+        }
+    }
+    return true;
 }
 
 vector<Term *> List::getElements(){
