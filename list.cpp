@@ -1,6 +1,8 @@
 #include "list.h"
 #include "variable.h"
+#include "atom.h"
 #include "number.h"
+#include "struct.h"
 
 string List::symbol() const{
     string ret = "[";
@@ -40,6 +42,10 @@ string List::value(){
 //         return false;
 //     }
 // }
+
+bool List::match(Atom &a){
+    return false;
+}
 
 bool List::match(List &l){
 
