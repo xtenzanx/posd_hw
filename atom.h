@@ -6,6 +6,7 @@ using std::string;
 
 class Number;
 class Variable;
+class List;
 
 class Atom : public Term{
 public:
@@ -16,6 +17,7 @@ public:
   bool match(Number n);
   bool match(Atom a);
   bool match(Variable &v);
+  bool match(List &l);
 
   string _symbol;
 };

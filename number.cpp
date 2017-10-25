@@ -2,6 +2,7 @@
 #include "number.h"
 #include "atom.h"
 #include "variable.h"
+#include "list.h"
 
 string Number::symbol() const{
     return _symbol;
@@ -19,4 +20,7 @@ bool Number::match(Atom a){
 }
 bool Number::match(Variable &v){
     return v.match(*this);
+}
+bool Number::match(List &l){
+    return false;
 }

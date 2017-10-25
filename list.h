@@ -9,8 +9,10 @@ using std::vector;
 class List : public Term {
 public:
   string symbol() const;
-  string value() const;
-  bool match(Term & term);
+  string value();
+  // bool match(Term & term);
+  bool match(List &l);
+  vector<Term *> getElements();
 
 public:
   List (): _elements() {}

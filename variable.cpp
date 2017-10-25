@@ -3,14 +3,15 @@
 #include "atom.h"
 #include "number.h"
 #include "struct.h"
+#include "list.h"
 
 string Variable::symbol() const{
     return _symbol;
 }
 
 string Variable::value(){
-    if(matchStruct!=0){
-        return matchStruct->value();
+    if(matchGroup!=0){
+        return matchGroup->value();
     }
     else{
         return _value;
@@ -51,7 +52,7 @@ bool Variable::match(Atom a){
 }
 
 
-bool Variable::match(Number n){
+bool Variable::match(Number &n){
     bool ret = _assignable;
     
     if(_value == n.symbol()){
@@ -141,9 +142,10 @@ bool Variable::match(Variable &v){
 bool Variable::match(Struct &s){
     bool ret = _assignable;
 
+    matchGroup = &s;
 
-    matchStruct = &s;
-    
+    //待有需要更新
+
     // if(_value == n.symbol()){
     //     ret = true;
     // }
@@ -161,4 +163,39 @@ bool Variable::match(Struct &s){
     // }
 
     return ret;
+}
+bool Variable::match(List &l){
+
+    // for(int i = 0; i < l._elements.size(); i++){
+    //     if(l._elements[i]->symbol() == _symbol){
+    //         return false;
+    //     }
+    // }
+
+    //如list中包含自身變數則回傳false
+    for(int i = 0; i < l.getElements().size(); i++){
+        if(l.getElements()[i]->symbol() == _symbol){
+            return false;
+        }
+    }
+
+    matchGroup = &l;
+
+    return true;
+}
+
+
+bool Variable::match(Term & term){
+    Number * pn = dynamic_cast<Number *>(&term);
+    Variable * pv = dynamic_cast<Variable *>(&term);
+    if(pn){
+        return match(*pn);
+    }
+    else if(pv){
+        return match(*pv);
+    }
+    else{
+        return false;
+    }
+
 }
