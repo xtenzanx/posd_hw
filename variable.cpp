@@ -186,9 +186,13 @@ bool Variable::match(List &l){
 
 
 bool Variable::match(Term & term){
+    Atom * pa = dynamic_cast<Atom *>(&term);
     Number * pn = dynamic_cast<Number *>(&term);
     Variable * pv = dynamic_cast<Variable *>(&term);
-    if(pn){
+    if(pa){
+        return match(*pa);
+    }
+    else if(pn){
         return match(*pn);
     }
     else if(pv){
