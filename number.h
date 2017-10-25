@@ -30,6 +30,7 @@ public:
     bool match(Atom a);
     bool match(Variable &v);
     bool match(List &l);
+    bool match(Term & term);
 
 private:
     string _symbol;

@@ -138,7 +138,8 @@ TEST(List, matchToVarToAtominListShouldSucceed) {
   vector<Term *> args1 = {&n1, &X, &terence_tao};
   vector<Term *> args2 = {&n1, &n2, &terence_tao};
   List l1(args1), l2(args2);
-  EXPECT_TRUE(l1.match(l2));
+  // EXPECT_TRUE(l1.match(l2));
+  EXPECT_TRUE(l2.match(l1));
   ASSERT_EQ("8128", X.value());
 }
 
