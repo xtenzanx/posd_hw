@@ -90,14 +90,18 @@ vector<Term *> List::getElements(){
 
 
 Term * List::head() const {
-    if(!_elements.size())
+    if(!_elements.size()){
         throw string("Accessing head in an empty list");
+    }
+
     return _elements[0];
 }
 
 List * List::tail() const {
-    if(!_elements.size())
+    if(!_elements.size()){
         throw string("Accessing tail in an empty list");
+    }
+        
     std :: vector<Term *>v(_elements.begin() + 1, _elements.end());
     List *temp = new List(v);
     return temp;
