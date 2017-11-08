@@ -9,24 +9,7 @@ class List : public Term {
 public:
   List() : _elements() {}
   List (vector<Term *> const & elements):_elements(elements){}
-  Term * head() const{
-    if (_elements.empty()){
-		  throw string( "Accessing head in an empty list" );      
-    }
-    else{
-      return _elements[0];
-    }      
-  }
-  List * tail() const{
-    if (_elements.empty()){
-		  throw string( "Accessing tail in an empty list" );      
-    }
-    else{
-      vector<Term *> tailElements (_elements.begin()+1, _elements.end());
-      List * tailElementsPtr = new List(tailElements);
-      return tailElementsPtr;
-    } 
-  }
+
   string symbol() const{
     if(_elements.empty()){
       return "[]";
@@ -65,13 +48,31 @@ public:
   }
   bool match(Term & term){
     List * li = dynamic_cast<List *>(&term);
-    if(_elements.size() == li->_elements.size()){ //two list have the same size
+    if(_elements.size() == li->_elements.size()){
       for (int i=0; i<_elements.size()-1; i++){
         _elements[i]->match(li->getClasstype(i));
       }        
 		  return true;
     }
     return false;
+  }
+
+  Term * head() const{
+    if(!_elements.size()){
+        throw string("Accessing head in an empty list");
+    }
+
+    return _elements[0];   
+  }
+
+  List * tail() const{
+    if(!_elements.size()){
+        throw string("Accessing tail in an empty list");
+    }
+        
+    std :: vector<Term *>v(_elements.begin() + 1, _elements.end());
+    List *temp = new List(v);
+    return temp;
   }
 private:
   vector<Term *> _elements;
