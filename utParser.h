@@ -105,7 +105,7 @@ TEST_F(ParserTest, parseStructThreeArgs) {
 TEST_F(ParserTest, parseListEmpty) {
   Scanner scanner("   [   ]");
   Parser parser(scanner);
-  // ASSERT_EQ("[]", parser.createTerm()->symbol());
+  ASSERT_EQ("[]", parser.createTerm()->symbol());
 }
 
 
@@ -127,6 +127,7 @@ TEST_F(ParserTest, listOfTermsEmpty) {
   Scanner scanner("");
   Parser parser(scanner);
   // ASSERT_EQ("", parser.createTerm()->symbol());
+  ASSERT_EQ(nullptr, parser.createTerm());
 }
 
 
@@ -148,7 +149,7 @@ TEST_F(ParserTest, parseStructOfStructAllTheWay) {
 TEST_F(ParserTest, parseListOfLists) {
   Scanner scanner("   [  [1], [] ]");
   Parser parser(scanner);
-  // ASSERT_EQ("[[1], []]", parser.createTerm()->symbol());
+  ASSERT_EQ("[[1], []]", parser.createTerm()->symbol());
 }
 
 
@@ -159,7 +160,7 @@ TEST_F(ParserTest, parseListOfLists) {
 TEST_F(ParserTest, parseListOfListsAndStruct) {
   Scanner scanner("   [  [1], [], s(s(1)) ]   ");
   Parser parser(scanner);
-  // ASSERT_EQ("[[1], [], s(s(1))]", parser.createTerm()->symbol());
+  ASSERT_EQ("[[1], [], s(s(1))]", parser.createTerm()->symbol());
 }
 
 // Given there is string: "   [1, 2]" in scanner.
@@ -169,7 +170,7 @@ TEST_F(ParserTest, parseListOfListsAndStruct) {
 TEST_F(ParserTest, parseList) {
   Scanner scanner("   [1, 2]");
   Parser parser(scanner);
-  // ASSERT_EQ("[1, 2]", parser.createTerm()->symbol());
+  ASSERT_EQ("[1, 2]", parser.createTerm()->symbol());
 }
 
 // Given there is string: "[1,2)" in scanner.
@@ -178,7 +179,12 @@ TEST_F(ParserTest, parseList) {
 TEST_F(ParserTest, illegal1) {
   Scanner scanner("[1,2)");
   Parser parser(scanner);
-  // ASSERT_EQ("unexpected token", parser.createTerm()->symbol());
+  try{
+    parser.createTerm();
+	}
+	catch (const string error){
+		ASSERT_EQ("unexpected token", error);
+	}
 }
 
 // Given there is string: ".(1,[])" in scanner.
@@ -190,9 +196,16 @@ TEST_F(ParserTest, illegal1) {
 TEST_F(ParserTest, ListAsStruct) {
   Scanner scanner(".(1,[])");
   Parser parser(scanner);
-  vector<Term*> terms = parser.getArgs();
+
+  Struct* s = dynamic_cast<Struct*> (parser.createTerm());
+  ASSERT_EQ(2, s->arity());
+  ASSERT_EQ(".(1, [])", s->symbol());
+  ASSERT_EQ("1", s->args(0)->symbol());
+  ASSERT_EQ("[]", s->args(1)->symbol());
+
   // ASSERT_EQ("2", parser.createTerm()->arity());
   // ASSERT_EQ(".(1, [])", parser.createTerm()->symbol());
+  // vector<Term*> terms = parser.getArgs();
   // ASSERT_EQ("1", terms[0]->symbol());
   // ASSERT_EQ("[]", terms[1]->symbol());
 }
@@ -207,7 +220,14 @@ TEST_F(ParserTest, ListAsStruct) {
 TEST_F(ParserTest, ListAsStruct2) {
   Scanner scanner(".(2,.(1,[]))");
   Parser parser(scanner);
-  vector<Term*> terms = parser.getArgs();
+
+  Struct* s = dynamic_cast<Struct*> (parser.createTerm());
+  ASSERT_EQ(2, s->arity());
+  ASSERT_EQ(".(2, .(1, []))", s->symbol());
+  ASSERT_EQ("2", s->args(0)->symbol());
+  ASSERT_EQ(".(1, [])", s->args(1)->symbol());
+
+  // vector<Term*> terms = parser.getArgs();
   // ASSERT_EQ("2", parser.createTerm()->arity());
   // ASSERT_EQ(".(2, .(1, []))", parser.createTerm()->symbol());
   // ASSERT_EQ("2", terms[0]->symbol());
@@ -271,7 +291,7 @@ TEST_F(ParserTest, parseStructTwoArgs) {
 TEST_F(ParserTest, parseStructDOTSTwoArgs) {
   Scanner scanner("...(11,12)");
   Parser parser(scanner);
-  // ASSERT_EQ("...(11, 12)", parser.createTerm()->symbol());
+  ASSERT_EQ("...(11, 12)", parser.createTerm()->symbol());
 }
 
 
