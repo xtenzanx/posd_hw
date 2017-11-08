@@ -25,8 +25,20 @@ public:
     return _name;
   }
   string symbol() const {
+    // string ret = _name.symbol() + "(";
+    // std::vector<Term *>::const_iterator it = _args.begin();
+    // for (; it != _args.end()-1; ++it)
+    //   ret += (*it)->symbol()+", ";
+    // ret  += (*it)->symbol()+")";
+    // return ret;
     string ret = _name.symbol() + "(";
     std::vector<Term *>::const_iterator it = _args.begin();
+
+    if (_args.empty()){
+      ret += ")";
+      return ret;
+    }
+
     for (; it != _args.end()-1; ++it)
       ret += (*it)->symbol()+", ";
     ret  += (*it)->symbol()+")";
