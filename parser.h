@@ -22,32 +22,24 @@ public:
     }else if(token == NUMBER){
       return new Number(_scanner.tokenValue());
     }else if(token == ATOM || token == ATOMSC){
-        // Atom* atom = new Atom(symtable[_scanner.tokenValue()].first);
-        // if(_scanner.currentChar() == '('){
-        //   _scanner.nextToken();
-        //   vector<Term*> terms = getArgs();
-        //   if(_currentToken == ')')
-        //     return new Struct(*atom, terms);
-        // }
-        // else{
-        //   return atom;
-        // }
         Atom* atom = new Atom(symtable[_scanner.tokenValue()].first);
         if(_scanner.currentChar() == '(') {
           _scanner.nextToken() ;
-          if (_scanner.currentChar() == ')'){
-            
+          if(_scanner.currentChar() == ')'){
             _scanner.nextToken();
-            vector<Term*> emptyTerms = {};
-            return new Struct(*atom, emptyTerms);
-            // throw string("unexpected token2");
-          }
-          vector<Term*> terms = getArgs();
-          if(_currentToken == ')')
+            vector<Term*> terms = {};
             return new Struct(*atom, terms);
+          }
+          else{
+            vector<Term*> terms = getArgs();
+            if(_currentToken == ')'){
+              return new Struct(*atom, terms);
+            }
+          }
         }
-        else
+        else{
           return atom;
+        }
     }else if(token == '['){
       _scanner.skipLeadingWhiteSpace();
       if (_scanner.currentChar() == ']'){
