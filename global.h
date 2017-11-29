@@ -24,7 +24,7 @@ vector<pair<string, int>> symtable;
 
 bool isSpecialCh(char c) {
   return c == '+'
-      // || c == '=' // ... the matching operator
+         //|| c == '=' // ... the matching operator
          || c == '-'
          || c == '*'
          || c == '/'
