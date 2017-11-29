@@ -6,8 +6,8 @@
 #include <iostream>
 using namespace std;
 
-using std::string;
-using std::stack;
+// using std::string;
+// using std::stack;
 
 #include "atom.h"
 #include "variable.h"
@@ -83,67 +83,23 @@ public:
       Term * term = createTerm();
 
       //檢查Struct內變數是否出現過在temp_table
-      if(Struct * s = dynamic_cast<Struct*> (term)){
-        for(int i = 0; i < (int) s->arity(); i++){
-          Node * n = new Node(TERM, s->args(i), nullptr, nullptr);
-
-
-
-          //---代改---
-          if(Struct * ss = dynamic_cast<Struct*> (s->args(i))){
-            for(int k = 0; k < (int) ss->arity(); k++){
-              Node * n1 = new Node(TERM, ss->args(k), nullptr, nullptr);
-              bool exist1 = true;
-              for(int j = 0; j < (int) temp_table.size(); j++){
-                if(ss->args(k)->symbol() == temp_table[j]->term->symbol()){
-                  // cout << "this----------" << endl;
-                  ss->setArgs(k,temp_table[j]->term);
-                  exist1 = false;
-                }
-              }
-    
-              if (exist1){ 
-                // cout << "新增" << s->args(i)->symbol() << " 到temp_table" << endl;
-                temp_table.push_back(n1);
-              }
-            }
-          }
-          //---代改---
-
-
-
-
-          bool exist = true;
-          for(int j = 0; j < (int) temp_table.size(); j++){
-            if(s->args(i)->symbol() == temp_table[j]->term->symbol()  &&  status){
-              s->setArgs(i,temp_table[j]->term);
-              // s->args(i)->match(*(temp_table[j]->term));
-              exist = false;
-            }
-          }
-
-          if (exist){ 
-            // cout << "新增" << s->args(i)->symbol() << " 到temp_table" << endl;
-            temp_table.push_back(n);
-          }
-        }
-      }
+      checkComponent(term);
 
       //檢查變數是否出現過在temp_table
       if ( term != nullptr ){
         _terms.push_back(term);
         Node * n = new Node(TERM, term, nullptr, nullptr);
         bool exist = true;
-        for( int i = 0 ; i < (int)temp_table.size() ;i++ ) {
-          if ( temp_table[i]->term->symbol() == n->term->symbol()  &&  status) {
-            n = temp_table[i];
+        for( int i = 0 ; i < (int)temp_table[table_index].size() ;i++ ) {
+          if ( temp_table[table_index][i]->term->symbol() == n->term->symbol()) {
+            n = temp_table[table_index][i];
             _terms[_terms.size()-1] = n->term;
             exist = false;
           }
         }
         if (exist){
           // cout << "新增" << n->term->symbol() << " 到temp_table" << endl;
-          temp_table.push_back(n);
+          temp_table[table_index].push_back(n);
         }
         op_term.push(n);
       }
@@ -167,7 +123,7 @@ public:
 
         op_op.push(n);
 
-        status = false;
+        table_index++;
       }
     }
 
@@ -177,6 +133,29 @@ public:
       temp = makeTree();
       op_term.push(temp);
       tree = temp;
+    }
+  }
+
+  void checkComponent(Term * term){
+    if(Struct * s = dynamic_cast<Struct*> (term)){
+      for(int i = 0; i < (int) s->arity(); i++){
+        Node * n = new Node(TERM, s->args(i), nullptr, nullptr);
+
+        checkComponent(s->args(i));
+
+        bool exist = true;
+        for(int j = 0; j < (int) temp_table[table_index].size(); j++){
+          if(s->args(i)->symbol() == temp_table[table_index][j]->term->symbol()){
+            s->args(i)->match(*(temp_table[table_index][j]->term));
+            exist = false;
+          }
+        }
+
+        if (exist){ 
+          // cout << "新增" << s->args(i)->symbol() << " 到temp_table" << endl;
+          temp_table[table_index].push_back(n);
+        }
+      }
     }
   }
 
@@ -195,8 +174,9 @@ public:
     return tree;
   }
 
-  vector<Node *> temp_table;
-  bool status = true;
+  
+  vector<Node *> temp_table[10];
+  int table_index = 0;
 
 private:
   FRIEND_TEST(ParserTest, createArgs);

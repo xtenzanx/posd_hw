@@ -17,11 +17,6 @@ public:
     return _args[index];
   }
 
-  //test
-  void setArgs(int index,Term * s_term){
-    _args[index] = s_term;
-  }
-
   Atom & name() {
     return _name;
   }
