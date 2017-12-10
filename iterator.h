@@ -87,7 +87,6 @@ public:
     _index = 1;
     _terms.clear();
     DFS(_term);
-
   }
 
   T currentItem() const {

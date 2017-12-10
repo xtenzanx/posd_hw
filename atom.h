@@ -3,8 +3,9 @@
 
 #include <string>
 #include <sstream>
-using std::string;
 #include "term.h"
+
+using std::string;
 
 
 class Atom : public Term{
