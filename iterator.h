@@ -1,9 +1,12 @@
 #ifndef ITERATOR_H
 #define ITERATOR_H
 
+#include <queue>
 #include "struct.h"
 #include "list.h"
-#include <queue>
+
+
+using namespace std;
 
 template <class T>
 class Iterator {
@@ -91,11 +94,11 @@ public:
   }
 
   T currentItem() const {
-    return _terms[_index];
+    return _dfs[_index];
   }
 
   bool isDone() const {
-    return _index >= _terms.size() - 1;
+    return _index >= _dfs.size() - 1;
   }
 
   void next() {
@@ -103,15 +106,16 @@ public:
   }
 
   void dfs(T term) {
-    _terms.push_back(term);
-    Struct *s = dynamic_cast<Struct *>(term);
-    List *l = dynamic_cast<List *>(term);
+    _dfs.push_back(term);
 
+    Struct *s = dynamic_cast<Struct *>(term);
     if(s){
       for (int i=0; i<s->arity(); i++){
         dfs(s->args(i));
       }
     }
+
+    List *l = dynamic_cast<List *>(term);
     if(l){
       for (int i=0; i<l->arity(); i++){
         dfs(l->args(i));
@@ -121,7 +125,7 @@ public:
 private:
   int _index;
   T _term;
-  std::vector<T> _terms;
+  vector<T> _dfs;
 };
 
 template <class T>
@@ -133,18 +137,21 @@ public:
     _index = 1;
     queue<T> q;
     q.push(_term);
+
     while(!q.empty()) {
       T n = q.front();
       q.pop();
-      _terms.push_back(n);
+      _bfs.push_back(n);
+
       Struct *s = dynamic_cast<Struct *>(n);
-      List *l = dynamic_cast<List *>(n);
       if (s){
        for (int i = 0; i < s->arity(); i++){
         q.push(s->args(i));
        }
       }
-      else if(l){
+
+      List *l = dynamic_cast<List *>(n);
+      if(l){
         for (int i = 0; i < l->arity(); i++){
           q.push(l->args(i));
         }
@@ -153,11 +160,11 @@ public:
   }
 
   T currentItem() const {
-    return _terms[_index];
+    return _bfs[_index];
   }
 
   bool isDone() const {
-    return _index >= _terms.size() - 1;
+    return _index >= _bfs.size() - 1;
   }
 
   void next() {
@@ -165,8 +172,8 @@ public:
   }
 
 private:
-  int _index, tmp = 0;
+  int _index;
   T _term;
-  std::vector<T> _terms;
+  vector<T> _bfs;
 };
 #endif

@@ -17,6 +17,7 @@ TEST(iterator, first) {
     Number two(2);
     Struct t(Atom("t"), { &X, &two });
     Struct s(Atom("s"), { &one, &t, &Y });
+
     Iterator<Term*> *itStruct = s.createIterator();
     itStruct->first();
     EXPECT_EQ("1", itStruct->currentItem()->symbol());
@@ -37,11 +38,11 @@ TEST(iterator, nested_iterator) {
   Number two(2);
   Struct t(Atom("t"), { &X, &two });
   Struct s(Atom("s"), { &one, &t, &Y });
+
   StructIterator<Term*> it(&s);
   it.first();
   it.next();
   Struct *s2 = dynamic_cast<Struct *>(it.currentItem());
-
   StructIterator<Term*> it2(s2);
   it2.first();
   EXPECT_EQ("X", it2.currentItem()->symbol());
@@ -60,6 +61,7 @@ TEST(iterator, firstList) {
     Number two(2);
     Struct t(Atom("t"), { &X, &two });
     List l({ &one, &t, &Y });
+    
     ListIterator<Term*> it(&l);
     Iterator<Term*>* itList = &it;
     itList->first();
