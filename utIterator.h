@@ -1,13 +1,14 @@
 #ifndef UTITERATOR_H
 #define UTITERATOR_H
 
-#include "struct.h"
-#include "variable.h"
+#include "term.h"
 #include "atom.h"
+#include "number.h"
+#include "variable.h"
+#include "struct.h"
 #include "list.h"
 #include "iterator.h"
-#include "number.h"
-#include "term.h"
+
 
 TEST(iterator, first) {
     Number one(1);
@@ -106,30 +107,10 @@ TEST(iterator, Struct_DFS_1) {
   EXPECT_EQ("s(2, Y)", it->currentItem()->symbol());
   it->next();
   EXPECT_EQ("2", it->currentItem()->symbol());
+  EXPECT_FALSE(it->isDone());
   it->next();
   EXPECT_EQ("Y", it->currentItem()->symbol());
   EXPECT_TRUE(it->isDone());
-
-
-  // s(1, t(X, 2), Y)
-  // Number one(1);
-  // Variable X("X");
-  // Variable Y("Y");
-  // Number two(2);
-  // Struct t(Atom("t"), { &X, &two });
-  // Struct s(Atom("s"), { &one, &t, &Y });
-  // Iterator<Term*> *it = s.createDFSIterator();
-  // it->first();
-  // EXPECT_EQ("1", it->currentItem()->symbol());
-  // it->next();
-  // EXPECT_EQ("t(X, 2)", it->currentItem()->symbol());
-  // it->next();
-  // EXPECT_EQ("X", it->currentItem()->symbol());
-  // it->next();
-  // EXPECT_EQ("2", it->currentItem()->symbol());
-  // it->next();
-  // EXPECT_EQ("Y", it->currentItem()->symbol());
-  // EXPECT_TRUE(it->isDone());
 }
 
 //S(1, t(X, 2,[X, Y], Y))
