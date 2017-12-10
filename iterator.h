@@ -85,7 +85,7 @@ public:
 
   void first() {
     _index = 1;
-    _terms.clear();
+    // _terms.clear();
     DFS(_term);
   }
 
@@ -128,7 +128,7 @@ public:
 
   void first() {
     _index = 1;
-    _terms.clear();
+    // _terms.clear();
     BFS(_term);
   }
 
