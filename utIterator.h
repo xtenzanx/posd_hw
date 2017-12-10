@@ -86,25 +86,25 @@ TEST(iterator, NullIterator){
 
 //------
 
-//s(tom,1,X,s(2, Y))
+//dfs(tom, s(1, X), 2, Y)
 TEST(iterator, Struct_DFS_1) {
   Atom tom("tom");
   Number n1(1);
   Number n2(2);
   Variable X("X");
   Variable Y("Y");
-  Struct s(Atom("s"), { &n2, &Y });
-  Struct dfs(Atom("dfs"), { &tom, &n1, &X, &s });
+  Struct s(Atom("s"), { &n1, &X });
+  Struct dfs(Atom("dfs"), { &tom, &s, &n2, &Y });
 
   Iterator<Term*> *it = dfs.createDFSIterator();
   it->first();
   EXPECT_EQ("tom", it->currentItem()->symbol());
   it->next();
+  EXPECT_EQ("s(1, X)", it->currentItem()->symbol());
+  it->next();
   EXPECT_EQ("1", it->currentItem()->symbol());
   it->next();
   EXPECT_EQ("X", it->currentItem()->symbol());
-  it->next();
-  EXPECT_EQ("s(2, Y)", it->currentItem()->symbol());
   it->next();
   EXPECT_EQ("2", it->currentItem()->symbol());
   EXPECT_FALSE(it->isDone());
@@ -113,80 +113,90 @@ TEST(iterator, Struct_DFS_1) {
   EXPECT_TRUE(it->isDone());
 }
 
-//S(1, t(X, 2,[X, Y], Y))
+//dfs(X, s2(s1(tom, 1), 2), Y)
 TEST(iterator, Struct_DFS_2) {
-  Number one(1);
+  Atom tom("tom");
+  Number n1(1);
+  Number n2(2);
   Variable X("X");
   Variable Y("Y");
-  Number two(2);
-  List l({&X,&Y});
-  Struct t(Atom("t"), { &X, &two,&l });
-  Struct s(Atom("s"), { &one, &t, &Y });
-  Iterator<Term*> *it = s.createDFSIterator();
+  Struct s1(Atom("s1"), { &tom, &n1 });
+  Struct s2(Atom("s2"), { &s1, &n2 });
+  Struct dfs(Atom("dfs"), { &X, &s2, &Y });
+
+  Iterator<Term*> *it = dfs.createDFSIterator();
   it->first();
+  EXPECT_EQ("X", it->currentItem()->symbol());
+  it->next();
+  EXPECT_EQ("s2(s1(tom, 1), 2)", it->currentItem()->symbol());
+  it->next();
+  EXPECT_EQ("s1(tom, 1)", it->currentItem()->symbol());
+  it->next();
+  EXPECT_EQ("tom", it->currentItem()->symbol());
+  it->next();
   EXPECT_EQ("1", it->currentItem()->symbol());
   it->next();
-  EXPECT_EQ("t(X, 2, [X, Y])", it->currentItem()->symbol());
-  it->next();
-  EXPECT_EQ("X", it->currentItem()->symbol());
-  it->next();
   EXPECT_EQ("2", it->currentItem()->symbol());
-  it->next();
-  EXPECT_EQ("[X, Y]", it->currentItem()->symbol());
-  it->next();
-  EXPECT_EQ("X", it->currentItem()->symbol());
+  EXPECT_FALSE(it->isDone());
   it->next();
   EXPECT_EQ("Y", it->currentItem()->symbol());
-  it->next();
-  EXPECT_EQ("Y", it->currentItem()->symbol());
-  it->next();
   EXPECT_TRUE(it->isDone());
 }
 
-// s(1, t(X, 2), Y)
+//bfs(tom, s(1, X), 2, Y)
 TEST(iterator, Struct_BFS_1) {
-  Number one(1);
+  Atom tom("tom");
+  Number n1(1);
+  Number n2(2);
   Variable X("X");
   Variable Y("Y");
-  Number two(2);
-  Struct t(Atom("t"), { &X, &two });
-  Struct s(Atom("s"), { &one, &t, &Y });
-  Iterator<Term*> *it = s.createBFSIterator();
+  Struct s(Atom("s"), { &n1, &X });
+  Struct bfs(Atom("bfs"), { &tom, &s, &n2, &Y });
+
+  Iterator<Term*> *it = bfs.createBFSIterator();
   it->first();
-  EXPECT_EQ("1", it->currentItem()->symbol());
+  EXPECT_EQ("tom", it->currentItem()->symbol());
   it->next();
-  EXPECT_EQ("t(X, 2)", it->currentItem()->symbol());
+  EXPECT_EQ("s(1, X)", it->currentItem()->symbol());
+  it->next();
+  EXPECT_EQ("2", it->currentItem()->symbol());
   it->next();
   EXPECT_EQ("Y", it->currentItem()->symbol());
   it->next();
-  EXPECT_EQ("X", it->currentItem()->symbol());
+  EXPECT_EQ("1", it->currentItem()->symbol());
+  EXPECT_FALSE(it->isDone());
   it->next();
-  EXPECT_EQ("2", it->currentItem()->symbol());
+  EXPECT_EQ("X", it->currentItem()->symbol());
   EXPECT_TRUE(it->isDone());
 }
 
-//s(1, t(X, 2), Y, [])
+//bfs(X, s2(s1(tom, 1), 2), Y)
 TEST(iterator, Struct_BFS_2) {
-  Number one(1);
+  Atom tom("tom");
+  Number n1(1);
+  Number n2(2);
   Variable X("X");
   Variable Y("Y");
-  Number two(2);
-  List l;
-  Struct t(Atom("t"), { &X, &two });
-  Struct s(Atom("s"), { &one, &t, &Y, &l});
-  Iterator<Term*> *it = s.createDFSIterator();
+  Struct s1(Atom("s1"), { &tom, &n1 });
+  Struct s2(Atom("s2"), { &s1, &n2 });
+  Struct bfs(Atom("bfs"), { &X, &s2, &Y });
+
+  Iterator<Term*> *it = bfs.createBFSIterator();
   it->first();
-  EXPECT_EQ("1", it->currentItem()->symbol());
-  it->next();
-  EXPECT_EQ("t(X, 2)", it->currentItem()->symbol());
-  it->next();
   EXPECT_EQ("X", it->currentItem()->symbol());
   it->next();
-  EXPECT_EQ("2", it->currentItem()->symbol());
+  EXPECT_EQ("s2(s1(tom, 1), 2)", it->currentItem()->symbol());
   it->next();
   EXPECT_EQ("Y", it->currentItem()->symbol());
   it->next();
-  EXPECT_EQ("[]", it->currentItem()->symbol());
+  EXPECT_EQ("s1(tom, 1)", it->currentItem()->symbol());
+  it->next();
+  EXPECT_EQ("2", it->currentItem()->symbol());
+  it->next();
+  EXPECT_EQ("tom", it->currentItem()->symbol());
+  EXPECT_FALSE(it->isDone());
+  it->next();
+  EXPECT_EQ("1", it->currentItem()->symbol());
   EXPECT_TRUE(it->isDone());
 }
 
