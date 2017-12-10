@@ -78,6 +78,8 @@ private:
   List* _list;
 };
 
+
+
 template <class T>
 class DFSIterator :public Iterator<T> {
 public:
@@ -85,8 +87,7 @@ public:
 
   void first() {
     _index = 1;
-    // _terms.clear();
-    DFS(_term);
+    dfs(_term);
   }
 
   T currentItem() const {
@@ -101,18 +102,20 @@ public:
     _index++;
   }
 
-  void DFS(T term) {
+  void dfs(T term) {
     _terms.push_back(term);
-    Struct *ps = dynamic_cast<Struct*>(term);
-    List *pl = dynamic_cast<List*>(term);
-    if (ps){
-      for (int i=0;i<ps->arity();i++)
-        DFS(ps->args(i));
+    Struct *s = dynamic_cast<Struct *>(term);
+    List *l = dynamic_cast<List *>(term);
+
+    if(s){
+      for (int i=0; i<s->arity(); i++){
+        dfs(s->args(i));
+      }
     }
-    if(pl)
-    {
-      for (int i=0;i<pl->arity();i++)
-        DFS(pl->args(i));
+    if(l){
+      for (int i=0; i<l->arity(); i++){
+        dfs(l->args(i));
+      }
     }
   }
 private:
@@ -128,8 +131,25 @@ public:
 
   void first() {
     _index = 1;
-    // _terms.clear();
-    BFS(_term);
+    queue<T> q;
+    q.push(_term);
+    while(!q.empty()) {
+      T n = q.front();
+      q.pop();
+      _terms.push_back(n);
+      Struct *s = dynamic_cast<Struct *>(n);
+      List *l = dynamic_cast<List *>(n);
+      if (s){
+       for (int i = 0; i < s->arity(); i++){
+        q.push(s->args(i));
+       }
+      }
+      else if(l){
+        for (int i = 0; i < l->arity(); i++){
+          q.push(l->args(i));
+        }
+      }
+    }
   }
 
   T currentItem() const {
@@ -144,24 +164,6 @@ public:
     _index++;
   }
 
-  void BFS(T term) {
-    queue<T> q;
-    q.push(_term);
-    while(!q.empty()) {
-      T n = q.front();
-      q.pop();
-      _terms.push_back(n);
-      Struct *ps = dynamic_cast<Struct *>(n);
-      List *pl = dynamic_cast<List *>(n);
-      if (ps) {
-       for (int i = 0; i < ps->arity(); i++)
-        q.push(ps->args(i));
-      } else if (pl) {
-        for (int i = 0; i < pl->arity(); i++)
-          q.push(pl->args(i));
-      }
-    }
-  }
 private:
   int _index, tmp = 0;
   T _term;
