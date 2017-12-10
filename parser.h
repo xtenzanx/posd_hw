@@ -1,24 +1,22 @@
 #ifndef PARSER_H
 #define PARSER_H
 #include <string>
-#include <stack>
-
+using std::string;
 #include <iostream>
 using namespace std;
-
-// using std::string;
-// using std::stack;
-
 #include "atom.h"
 #include "variable.h"
 #include "global.h"
 #include "scanner.h"
 #include "struct.h"
 #include "list.h"
-#include "node.h"
 #include "utParser.h"
+#include "node.h"
+#include "term.h"
+#include "number.h"
 
 class Parser{
+
 public:
   Parser(Scanner scanner) : _scanner(scanner), _terms(){}
 
@@ -28,9 +26,10 @@ public:
     if(token == VAR){
       return new Variable(symtable[_scanner.tokenValue()].first);
     }else if(token == NUMBER){
+      //std::cout << new Number(_scanner.tokenValue()) << endl;
       return new Number(_scanner.tokenValue());
     }else if(token == ATOM || token == ATOMSC){
-      Atom* atom = new Atom(symtable[_scanner.tokenValue()].first);        
+      Atom* atom = new Atom(symtable[_scanner.tokenValue()].first);
       if(_scanner.currentChar() == '(' ) {
         return structure();
       }
@@ -55,6 +54,8 @@ public:
     {
       vector<Term *> args(_terms.begin() + startIndexOfStructArgs, _terms.end());
       _terms.erase(_terms.begin() + startIndexOfStructArgs, _terms.end());
+
+
       return new Struct(structName, args);
     } else {
       throw string("unexpected token");
@@ -79,105 +80,102 @@ public:
   }
 
   void matchings(){
-    while(_scanner.currentChar() != '.') {
-      Term * term = createTerm();
+    /*先讀入scanner*/
+    Term* term = createTerm();
 
-      //檢查Struct內變數是否出現過在temp_table
-      checkComponent(term);
-
-      //檢查變數是否出現過在temp_table
-      if ( term != nullptr ){
-        _terms.push_back(term);
-        Node * n = new Node(TERM, term, nullptr, nullptr);
-        bool exist = true;
-        for( int i = 0 ; i < (int)temp_table[table_index].size() ;i++ ) {
-          if ( temp_table[table_index][i]->term->symbol() == n->term->symbol()) {
-            n = temp_table[table_index][i];
-            _terms[_terms.size()-1] = n->term;
-            exist = false;
+    /*createTerm回傳如果是空指標代表沒有輸入東西*/
+    if(term!=nullptr){
+      /*判斷目前是不是讀到,*/
+      if(comma){
+        /*去檢查有沒有相同的symbol*/
+        Term* findTerm = find(term);
+        /*如果不是空指標代表有相同的跟他做match*/
+        if(findTerm != nullptr){
+          term->match(*findTerm);
+        }
+      }
+      _terms.push_back(term);
+      /*產生樹*/
+      while((_currentToken = _scanner.nextToken()) == ',' ||  _currentToken=='='|| _currentToken == ';'){
+        if(_currentToken == '='){
+          comma = false;
+          /*左節點擺目前的數*/
+          Node* left = new Node(TERM,_terms.back(),nullptr,nullptr);
+          /*塞入下一個*/
+          if(_terms.back()->value()== "s(s(X))"){
+            std::cout << "104fk" << endl;
           }
-        }
-        if (exist){
-          // cout << "新增" << n->term->symbol() << " 到temp_table" << endl;
-          temp_table[table_index].push_back(n);
-        }
-        op_term.push(n);
-      }
-      if( _scanner.currentChar() == '=' ) {
-        Node * n = new Node(EQUALITY);
-        op_op.push(n);
-      }
-      if( _scanner.currentChar() == ',' ) {
-        Node * n = new Node(COMMA);
-        Node * temp = makeTree();
-
-        op_term.push(temp);
-
-        op_op.push(n);
-      }
-      if( _scanner.currentChar() == ';' ) {
-        Node * n = new Node(SEMICOLON);
-        Node * temp = makeTree();
-
-        op_term.push(temp);
-
-        op_op.push(n);
-
-        table_index++;
-      }
-    }
-
-    Node * temp;
-
-    while(op_op.size() > 0){
-      temp = makeTree();
-      op_term.push(temp);
-      tree = temp;
-    }
-  }
-
-  void checkComponent(Term * term){
-    if(Struct * s = dynamic_cast<Struct*> (term)){
-      for(int i = 0; i < (int) s->arity(); i++){
-        Node * n = new Node(TERM, s->args(i), nullptr, nullptr);
-
-        checkComponent(s->args(i));
-
-        bool exist = true;
-        for(int j = 0; j < (int) temp_table[table_index].size(); j++){
-          if(s->args(i)->symbol() == temp_table[table_index][j]->term->symbol()){
-            s->args(i)->match(*(temp_table[table_index][j]->term));
-            exist = false;
+          _terms.push_back(createTerm());
+          /*右節點擺剛剛塞入的數*/
+          Node* right = new Node(TERM,_terms.back(),nullptr,nullptr);
+          if(_terms.back()->value()== "s(s(X))"){
+            /*可能地方*/
           }
+          /*擺入=並連到左節點與右節點*/
+          Node* root = new Node(EQUALITY,nullptr,left,right);
+          _expressionTree = root;
         }
-
-        if (exist){ 
-          // cout << "新增" << s->args(i)->symbol() << " 到temp_table" << endl;
-          temp_table[table_index].push_back(n);
+        else if(_currentToken == ','){
+          comma = true;
+          Node * left = _expressionTree;
+          matchings();
+          Node * root = new Node(COMMA, nullptr, left, expressionTree());
+          _expressionTree = root;
         }
-      }
+        else{
+          comma = false;
+          Node * left = _expressionTree;
+          matchings();
+          Node * root = new Node(SEMICOLON, nullptr, left, expressionTree());
+          _expressionTree = root;
+        }
+      }/*
+      std::cout << "112" << endl;
+      std::cout << _terms[0]->value() << endl;
+      std::cout << _terms[1]->value() << endl;
+      std::cout << _terms[2]->value() << endl;
+      std::cout << _terms[3]->value() << endl;
+      std::cout << _terms[4]->value() << endl;
+      std::cout << _terms[5]->value() << endl;
+      _terms[5]->match(*term);
+      std::cout << _terms[5]->typeinfo() << endl;*/
     }
   }
 
-  Node * makeTree() {
-    Node * n = op_op.top();
-    op_op.pop();
-    n->right = op_term.top();
-    op_term.pop();
-    n->left = op_term.top();
-    op_term.pop();
-
-    return n;
+  Node* expressionTree(){
+    return _expressionTree;
   }
 
-  Node * expressionTree(){
-    return tree;
+  /*去term中尋找是否有重複的*/
+  Term * find(Term * term){
+    for(int index = 0; index < _terms.size() ; index++){
+      /*目前的term和傳進來的term有沒有symbol相同的*/
+      if(_terms[index]->symbol() == term->symbol()) {
+        return _terms[index];
+      }
+      /*動態轉型struct*/
+      Struct * s = dynamic_cast<Struct*>(_terms[index]);
+      /*s如果不是空指標就代表有struct去找struct裏頭有沒有symbol相同的*/
+      if(s) {
+        return findStruct(s,term);
+      }
+    }
+    return nullptr;
   }
 
-  
-  vector<Node *> temp_table[10];
-  int table_index = 0;
-
+  Term * findStruct(Struct * s, Term * term){
+    /*檢查struct裏頭有沒有和term的symbol一樣的*/
+    for(int i = 0; i < s->arity() ; i++){
+      if(s->args(i)->symbol() == term->symbol()) {
+        return s->args(i);
+      }
+      Struct * ss = dynamic_cast<Struct*>(s->args(i));
+      if(ss) {
+        return findStruct(ss,term);
+      }
+    }
+    //return nullptr;
+  }
 private:
   FRIEND_TEST(ParserTest, createArgs);
   FRIEND_TEST(ParserTest,ListOfTermsEmpty);
@@ -189,7 +187,7 @@ private:
     if(term!=nullptr)
     {
       _terms.push_back(term);
-      while((_currentToken = _scanner.nextToken()) == ',' ) {
+      while((_currentToken = _scanner.nextToken()) == ',') {
         _terms.push_back(createTerm());
       }
     }
@@ -198,9 +196,8 @@ private:
   vector<Term *> _terms;
   Scanner _scanner;
   int _currentToken;
-  Node * tree;
-  stack<Node*> op_term;
-  stack<Node*> op_op;
-
+  Node* _expressionTree;
+  bool comma = false;
+  int _lastToken;
 };
 #endif

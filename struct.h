@@ -4,8 +4,12 @@
 #include "atom.h"
 #include <vector>
 #include <string>
+#include "term.h"
 
 using std::string;
+
+template <class T>
+class Iterator;
 
 class Struct: public Term {
 public:
@@ -39,6 +43,10 @@ public:
     return ret;
   }
   int arity() const {return _args.size();}
+
+  Iterator<Term*> * createIterator();
+  Iterator<Term*> * createDFSIterator();
+  Iterator<Term*> * createBFSIterator();
 private:
   Atom _name;
   std::vector<Term *> _args;
