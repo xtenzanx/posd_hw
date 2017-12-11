@@ -14,7 +14,6 @@
 #include "utParser.h"
 #include "node.h"
 
-// using std::string;
 using namespace std;
 
 class Parser{

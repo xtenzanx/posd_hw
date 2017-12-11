@@ -5,6 +5,7 @@
 #include <string>
 #include "list.h"
 #include "iterator.h"
+
 using std::vector;
 
 string List::symbol() const{

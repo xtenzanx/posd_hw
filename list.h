@@ -6,12 +6,9 @@
 #include <string>
 #include <typeinfo>
 #include <iostream>
+
 using std::vector;
 
-class Variable ;
-
-template<class T>
-class Iterator;
 
 class List : public Term {
 public:

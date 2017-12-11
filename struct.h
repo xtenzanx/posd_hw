@@ -8,8 +8,6 @@
 
 using std::string;
 
-template <class T>
-class Iterator;
 
 class Struct: public Term {
 public:

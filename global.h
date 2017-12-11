@@ -2,10 +2,9 @@
 #define GLOBAL_H
 
 #include <algorithm>
+#include <string>
 
 using std::pair;
-
-#include <string>
 using std::string;
 
 const int NONE = -1; // no tokenValue
