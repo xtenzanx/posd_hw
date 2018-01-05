@@ -1,25 +1,30 @@
-all: hw7
- 
-hw7: main.o term.o atom.o struct.o list.o
+all: hw8 shell
+
+hw8: main.o
 
 ifeq (${OS}, Windows_NT)
-	g++ -o hw7 main.o term.o atom.o struct.o list.o -lgtest
+	g++ -o hw8 main.o atom.o number.o variable.o struct.o proxy.o list.o node.o term.o -lgtest
 else
-	g++ -o hw7 main.o term.o atom.o struct.o list.o -lgtest -lpthread
+	g++ -o hw8 main.o atom.o number.o variable.o struct.o proxy.o list.o node.o term.o -lgtest -lpthread
 endif
 
-main.o: main.cpp variable.h global.h parser.h
-	g++ -std=gnu++0x -c main.cpp
-term.o: term.cpp term.h 
-	g++ -std=gnu++0x -c term.cpp
-atom.o: atom.cpp atom.h 
-	g++ -std=gnu++0x -c atom.cpp
-struct.o: struct.cpp struct.h 
-	g++ -std=gnu++0x -c struct.cpp
-list.o: list.cpp list.h 
-	g++ -std=gnu++0x -c list.cpp
+shell: shell.o
+ifeq (${OS}, Windows_NT)
+	g++ -o shell shell.o atom.o number.o variable.o struct.o proxy.o list.o node.o term.o -lgtest
+else
+	g++ -o shell shell.o atom.o number.o variable.o struct.o proxy.o list.o node.o term.o -lgtest -lpthread
+endif
+
+main.o: main.cpp utList.h atom.h atom.cpp number.h number.cpp variable.h variable.cpp struct.h struct.cpp list.h list.cpp term.h term.cpp proxy.h proxy.cpp utProxy.h scanner.h utScanner.h parser.h utParser.h global.h node.h node.cpp iterator.h utIterator.h
+	g++ -std=gnu++0x -c main.cpp term.cpp atom.cpp number.cpp variable.cpp struct.cpp proxy.cpp list.cpp node.cpp
+
+shell.o: shell.cpp
+	g++ -std=gnu++0x -c shell.cpp
 
 clean:
-	rm -f *.o hw7
-stat:
-	wc *.h *.cpp
+ifeq (${OS}, Windows_NT)
+	del *.o *.exe
+else
+	rm -f *.o hw8 shell
+endif
+

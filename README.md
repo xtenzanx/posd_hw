@@ -1,133 +1,215 @@
-### Pattern Oriented Software Design
-#### Fall, 2017
-#### Prof Y C Cheng
-#### Dept of Computer Science and Information Engineering
-#### Taipei Tech
+# POSD2017F Homework
 
-### Introduction
-We will build a Prolog term matching program in this course. Functionally, the program is simple but non-trivial. Thus, we will have plenty of opportunities to encounter **design problems**. After analyzing the design problems, we will make use of appropriate design patterns to solve them. The patterns include _Composite_, _Interpreter_, _Builder_, _Iterator_, _Proxy_, _Visitor_, and so on. Along the way we will also pick up some useful domain knowledge of computing: symbolic matching, lexical analysis, and parsing.
+## Homework assignment 7
 
-Thus the course requires you to get familiar with matching, the fundamental operation of executing a Prolog program. Due to time limitation, we will focus only on defining terms and performing matches. We build our simplified term matching program after [SWI Prolog](http://www.swi-prolog.org/).
+Please use [the files that were used in course](https://github.com/yccheng66/posd2017f) and copy test header to your repository from this project.
 
-I will be using the following simple way to write C++ programs. My programs (and your programs will, too) come with a makefile that builds it by typing _make_ in bash. We will use the g++ stack. While you are free to code on any OS platform (e.g., Ubuntu, MacOS, and bash on Ubuntu on Windows), your program assignment will be graded on Ubuntu.
+### Mob programming team on 12/02
+|   Team#4  |   Team#5  |
+| --------- | --------- |
+| 103590452 | 103590026 |
+| ~~105598072~~ | 105598046 |
+| 106598034 | 105598059 |
+| 106598040 | 106598007 |
+| 106598013 | 106598014 |
+| 106598056 | 106598043 | 
+| 106598064 | 106598052 |
+| 106598067 | 106598059 |
 
-When coding in class, I will use the editor [Atom](https://atom.io), which comes with syntax highlighting, code completion to make coding easy. I will also use the plugin [PlatformIO IDE Terminal](https://atom.io/packages/platformio-ide-terminal) so that we can access a terminal to build programs without leaving Atom.
+#### Assignment requirement
+ 
+  1. Write the corresponding makefile to generate executable file which named `hw7`. Note that it is the executable name, not the test file name.
+  
+  2. Make sure your CI job is passed before deadline.
 
-### Prolog basics - goal, relational goals, Conjunction of goals, disjunction of goals,
+#### Marks
 
-A _query_ consists of one or more _goal_:
+  You totally have 10 tests, each one is 10 points.
+  The sum score of assignment is 100 points.
 
-```prolog
-?- X=1.
-X = 1.
-```
+#### Deadline
 
-is a query "is X matchable to 1?" consisting of the relational goal "X=1". The goal "X=1" _succeeded_ (or is _satisfiable_) because variable X matches any legitimate term.
+  Fri Dec 8 2017 23:59:59
 
-```prolog
-?- X=1, Y=X.
-X = Y, Y = 1.
-```
+#### Note
 
-is a query "is X matchable to 1 _and_ is Y matchable to X?" that a _conjunction_ of two goals "X=1" and "Y = X". The goal succeeded.
+  * Try to read building information in console log and fix the hw problem by yourself as possible as you can.
+  
+
+## POSD Mob programming
+
+#### What is mob programming
+
+  >Mob programming is a software development approach where the whole team works on the same thing, at the same time, in the same space, and at the same computer. This is similar to pair programming where two people sit at the same computer and collaborate on the same code at the same time. With Mob Programming the collaboration is extended to everyone on the team, while still using a single computer for writing the code and inputting it into the code base.
+
+  from [Wikipedia: Mob programming](https://en.wikipedia.org/wiki/Mob_programming).
+
+  [Mob Programming, A Whole Team Approach](https://www.youtube.com/watch?v=8cy64qkgTyI)
+
+#### Description
+
+  TA will divide all students into 9 teams, 8 people each team. This will be decided randomly, everyone will work with someone else you are not familiar with. By this way, you need to have good communication with team member to organize, plan and practice.
+
+  It begins from this weekend(10/31), each team need to practice every Saturday afternoon before the demo in POSD class on coming Friday. The practice look like picture below, you will code together with a big screen, and discuss issues by using whiteboard.
+
+  ![Mob](https://i.imgur.com/SoIxm5P.jpg)
+
+  The practice will takes you about 3~4 hours, we will stay there with you for process smooth.
+  **Mob programming will be counted as a score, and each of you only need to submit the same code that you *mob***
+
+  The topic of mob programming is your POSD assignment, complete the program according to the test step by step. The team will discuss about design or each decision for the solution, and the whole process is treated as a standard for scoring.
+
+  In practice, everyone has to be `Driver`/`Navigator` alternatively. For `Driver`, your job is to controll keyboard and implement all instructions from `Navigator`. For `Navigator`, your job is to think about the design issue, solution, all stuff of decision, and instruct `Driver` to implement it.
+
+#### Prepare for Mob
+
+  1. Understand what's mob programming: see the introduction video above.
+
+  2. For each one student, you will get a questonnaire before mob, the questonnaire is about personal planning that what do you want to get from this time(like what's mob programming in reality? or how does other guy do his/her assignment, etc.). So, think about it before mob.
+
+  3. Plan the solution for assignmnet: do not just come here and wait for other guy share their wonderful solution. Think about problem first by yourself, therefore results a good communication and no wasting time.
+`
+#### Demonstration
+
+  On the Friday of next week, Each team have about **20 minutes** to show the demonstration which how they run the mob programming and how to solve the problem that in the assignment.
+  
+  Two teams will do the demonstration in order, the first team done a part of the code with three tests, the second team will need to continue to do the demo with the code.
+
+  Each team will demo about three tests in the class, you don't have to complete the all tests. The three tests is specified by TA, and we will pick the simple, medium and complex test for each team.
+  
+  About the code that you write through the mob, it will not be used in the later course, so you don't need to push it to repository of the course.
+
+#### Schedule on Saturday
+
+  This is temporary and may be adjusted according to the actual situation.
+
+  If you are on the week, please fill out the [lunch questionnaire](https://docs.google.com/forms/d/e/1FAIpQLSecaGZM_WujJToLXw9CfXtfg-8c-gXzbxOb9TT5TXlqZOsNxg/viewform?c=0&w=1&usp=mail_form_link), and **launch is free**.
+
+  Break ice and lunch(free): **12 : 00 ~ 12 : 50**
+
+  Prepared: **12 : 50 ~ 13 : 00**
+
+  Mob programming: **13 : 00 ~ 16 : 00**
+
+  Retrospective: **16 : 00 ~ 16 : 30**
+
+  Location: **宏裕科技大樓 13F Lab1321 or 16F 1622**
+
+#### Team list：
+
+Ctrl+f for finding your name.
+
+### Team #4 (12/02)
+|   Number  |
+| --------- |
+| 103590452 |
+| 105598072 |
+| 106598034 |
+| 106598040 |
+| 106598013 |
+| 106598056 |
+| 106598064 |
+| 106598067 |
 
 
-```prolog
-?- X=1, X=2.
-false.
-```
+### Team #5 (12/02)
+|   Number  |
+| --------- |
+| 103590026 |
+| 105598046 |
+| 105598059 |
+| 106598007 |
+| 106598014 |
+| 106598043 |
+| 106598052 |
+| 106598059 |
 
-is a query with a _negative_ answer because the conjunction of goals  _failed_ or is _unsatisfiable_.
 
-```prolog
-?- X=1; X=2.
-X = 1 ;
-X = 2.
-```
+### Team #6 ()
+|   Number  |
+| --------- |
+| 103590019 |
+| 105598061 |
+| 106598009 |
+| 106598017 |
+| 106598026 |
+| 106598037 |
+| 106598047 |
+| 106598057 |
 
-is a query with a _positive_ answer because the disjunctions succeeded in succession. Note that the ";" after "X=1" is typed by the user to query for more answers; the query terminates if the return key is hit.
 
-### Data objects in Prolog
+### Team #7 ()
+|   Number  |
+| --------- |
+| 103590450 |
+| 105598073 |
+| 106598005 |
+| 106598020 |
+| 106598028 |
+| 106598051 |
+| 106598055 |
+| 106598068 |
 
-Prolog comes four types of data objects: _atom_, _number_ (collectively known as _constant_), variable (forming _simple object_ with constant), and _structure_. For a simple description of syntax, see
-[Data objects in Prolog](http://eecs.wsu.edu/~cook/ai/lectures/prolog/node15.html).
 
-Atom and number are _self-identifying_: thus wherever you see it, the atom 'tom' will always be tom, and the number 1 will always be 1. The _value_ of an atom is exactly the _symbol_ of the atom.
+### Team #8 ()
+|   Number  |
+| --------- |
+| 105598401 |
+| 106598010 |
+| 106598018 | 
+| 106598025 |
+| 106598033 |
+| 106598039 |
+| 106598044 |
+| 106598063 |
 
-Variable brings _universal quantification_ to Prolog. Variable X becomes _instantiated_ when it is matched with a constant. This
-```prolog
-X = 1
-```
-gives the variable with symbol X the value of 1.  
 
-A structure is defined by a name and its arguments. _The name has a syntax of an atom_, and an argument can be any data object including structure. Structure makes it possible to describe arbitrary complex objects through composition of other objects.
+### Team #9 ()
+|   Number  |
+| --------- |
+| 103590002 |
+| 106598012 |
+| 106598019 |
+| 106598022 |
+| 106598069 |
+| 106598049 |
+| 106598065 |
+| 106598401 |
 
-```prolog
-point(1,1)
-triangle(point(1,1), point(0,0), point(0,1))
-```
 
-where _point(1, 1)_ is a structure with name _point_ and arguments _1_ and _1_, etc.
+### Team #1 (11/04 Done)
+|   Number  |
+| --------- |
+| 105598052 |
+| 106598024 |
+| 106598038 |
+| 106598048 |
+| 106598053 |
+| 106598054 |
+| 106598060 |
 
-### Rules of terms matching (Bratko p.41)
+### Team #2 (11/25 Done)
+|   Number  |
+| --------- |
+| 103590028 |
+| 105598043 |
+| 105598062 | 
+| 106598006 |
+| 106598016 |
+| 106598027 |
+| 106598029 |
+| 106598041 |
 
-Let _S_ and _T_ be two terms.
+### Team #3 (11/25 Done)
+|   Number  |
+| --------- |
+| 103590006 |
+| 104598046 |
+| 105598060 | 
+| 106598004 |
+| 106598011 |
+| 106598045 |
+| 106598042 |
+| 106598035 |
 
-* If _S_ and _T_ are constants then _S_ and _T_ match only if they are the same object.
-* If _S_ is a variable and T is anything, then they match, and _S_ is instantiated to _T_. Conversely, if _T_ is a variable then _T_ is instantiated to _S_.  
-* If _S_ and _T_ are structures then they match only if
-  * _S_ and _T_ have the same principal functor, and
-  * all their corresponding components match.
-
-  The result of the instantiation is determined by the matching of the components.
-
-### List
-
-```Prolog
-?- X = [1, 2, 3].
-X = [1, 2, 3].
-
-?- X = .(1,[]).
-X = [1]
-
-?- [1, 2] = .(1, .(2, [])).
-true.
-
-?- [1,2,3] = [H|L].
-H = 1,
-L = [2, 3]
-
-?- [1,2,3] = .(H, L).
-H = 1,
-L = [2, 3]
-```
-
-### Lexical analysis and parsing
-
-lexical analyzer, or token scanner
-(Dragon book, p71, Fig 2.37)
-
-| lexeme                   | token        | attribute value          |
-| :----------------------- | :----------  | :----------------------- |
-| sequence of digits       | Number       | numeric value of sequence|
-| small letter followed by alphanumeric|    Atom            |      index into symbol                    |
-| cap letter or '_' followed   by alphanumeric  | Var          | index into symbol        |
-
-term -> atom | number | var | struct | list
-
-struct -> atom '(' terms ')'
-
-list -> '[' terms ']'
-
-terms -> term, terms | e
-
-atom -> Atom
-
-number -> Number
-
-var -> Var
-
-rewritten to
-
-terms -> term rest| e
-rest -> ',' term rest | e
+#### Change log
